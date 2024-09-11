@@ -2,4 +2,4 @@ from pyraminx import Pyraminx
 
 pyraminx = Pyraminx()
 
-print(pyraminx.blue_face)
+pyraminx.print_pyraminx()
