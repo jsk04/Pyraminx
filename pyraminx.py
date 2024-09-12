@@ -19,7 +19,10 @@ class Pyraminx:
                       self.green_face,
                       self.yellow_face]
 
-    def create_faces(self, face_color):
+    def create_faces(self, face_color: str) -> list[list]:
+        """
+        Given the face color, return the array that stores all stickers of that face
+        """
         row_one = []
         row_two = []
         row_three = []
@@ -61,6 +64,9 @@ class Pyraminx:
         self.green_face = self.create_faces("green")
 
     def color_matching(self, row_num):
+        """
+        Helper function for print: Given a row number, return the corresponsing color letter for that row in all faces
+        """
         row_colors = []
         for face in self.faces:
             row = face[row_num]
@@ -77,10 +83,13 @@ class Pyraminx:
                 matching_letters.append("Y")
             if color == "green":
                 matching_letters.append("G")
-        
+
         return matching_letters
 
     def determine_spaces(self, row_num):
+        """
+        Helper function for print: Given a row number, return a list that has the number of spaces needed for printing.
+        """
         starting_space_count = {
             1 : [6, 14],
             2 : [4, 10],
@@ -90,8 +99,10 @@ class Pyraminx:
         
         return starting_space_count[row_num]
 
-
     def print_pyraminx(self):
+        """
+        Prints the current state of the pyraminx. 
+        """
         # for row #1
         matching_letters_1 = self.color_matching(0)
         space_count_1 = self.determine_spaces(1)
@@ -154,3 +165,39 @@ class Pyraminx:
             i += 1
 
         print(fourth_row_str)
+
+    def rotate_front_tip(self, is_clockwise: bool):
+        """
+        Rotates the tip of the front face, which is red. 
+        """
+        if is_clockwise:
+            temp_sticker_1 = self.blue_face[0][0]
+            temp_sticker_2 = self.red_face[0][0]
+            self.blue_face[0][0] = self.yellow_face[0][0]
+            self.red_face[0][0] = temp_sticker_1
+            self.yellow_face[0][0] = temp_sticker_2
+        else:
+            temp_sticker_1 = self.yellow_face[0][0]
+            temp_sticker_2 = self.red_face[0][0]
+            self.yellow_face[0][0] = self.blue_face[0][0]
+            self.red_face[0][0] = temp_sticker_1
+            self.blue_face[0][0] = temp_sticker_2
+
+    def rotate_front_two(self, is_clockwise: bool):
+        """
+        Rotates the second row of the front face, which is red. 
+        """ 
+        if is_clockwise:
+            i = 0
+            for front_sticker, right_sticker in zip(self.red_face[1], self.blue_face[1]):
+                temp_sticker = self.blue_face[1][i]
+                self.blue_face[1][i] = self.red_face[1][i]
+                self.red_face[1][i] = temp_sticker
+                i += 1
+        else:
+            j = 0
+            for front_sticker, left_sticker in zip(self.red_face[1], self.yellow_face[1]):
+                temp_sticker = self.yellow_face[1][j]
+                self.yellow_face[1][j] = self.red_face[1][j]
+                self.red_face[1][j] = temp_sticker
+                j += 1
