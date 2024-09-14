@@ -184,9 +184,9 @@ class Pyraminx:
 
         print(fourth_row_str)
 
-    def position_green(self, is_clockwise: bool) -> None:
+    def rearrange_green(self, is_clockwise: bool) -> None:
         """
-        Positions the green side when the 4th row of front face is rotated. 
+        Rearranges the green side when the 4th row of front face is rotated. 
         """
         if is_clockwise:
             temp_tip = self.green_face[0][0]
@@ -216,6 +216,30 @@ class Pyraminx:
             self.green_face[3][2] = temp_10
             self.green_face[3][3] = temp_21
             self.green_face[3][4] = temp_20
+        else:
+            temp_11 = self.green_face[1][1]
+            temp_00 = self.green_face[0][0]
+            temp_24 = self.green_face[2][4]
+            temp_23 = self.green_face[2][3]
+            temp_12 = self.green_face[1][2]
+
+            self.green_face[0][0] = self.green_face[3][0]
+            self.green_face[1][1] = self.green_face[3][1]
+            self.green_face[1][2] = self.green_face[2][0]
+            self.green_face[2][3] = self.green_face[2][1]
+            self.green_face[2][4] = self.green_face[1][0]
+            self.green_face[3][5] = temp_11
+            self.green_face[3][6] = temp_00
+
+            self.green_face[1][0] = self.green_face[3][2]
+            self.green_face[2][1] = self.green_face[3][3]
+            self.green_face[2][0] = self.green_face[3][4]
+            self.green_face[3][1] = self.green_face[3][5]
+            self.green_face[3][0] = self.green_face[3][6]
+
+            self.green_face[3][2] = temp_24
+            self.green_face[3][3] = temp_23
+            self.green_face[3][4] = temp_12
 
     def rotate_front_rows(self, is_clockwise: bool, row_num: int) -> None:
         """
@@ -233,7 +257,7 @@ class Pyraminx:
             self.blue_face[row_num-1] = temp_row
 
         if row_num == 4:
-            self.position_green(is_clockwise)
+            self.rearrange_green(is_clockwise)
 
     def rotate_left_rows(self, is_clockwise: bool, row_num: int) -> None:
         for front_sticker, left_sticker, right_sticker in zip(self.red_face_left[row_num-1], self.blue_face_left[row_num-1]):
