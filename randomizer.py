@@ -41,7 +41,6 @@ def movePicker(pyraminx):
         pyraminx.rotate_front_rows(is_clockwise, layer_or_row)
     elif move_type == "diagonal":
         # Rotate a diagonal layer (1, 2, or 3 diagonals)
-        diagonal = random.randint(1, 3)  # Randomly select one of the three diagonals
         pyraminx.rotate_diagonal_layer(diagonal, is_clockwise, layer_or_row)
     else:
         print("Error, no move chosen.")

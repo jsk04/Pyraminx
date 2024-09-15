@@ -2,7 +2,7 @@ class sticker:
     def __init__(self, position: int, color: str) -> None:
         self.position = position
         self.color = color
-        # self.previous = []
+        # self.previous = [] #Placeholder for heuristic
 
 
 class Pyraminx:
@@ -12,30 +12,12 @@ class Pyraminx:
         self.green_face = []
         self.yellow_face = []
 
-        self.yellow_face_left = []
-
         self.initialize()
 
         self.faces = [self.red_face,
                       self.blue_face,
                       self.green_face,
                       self.yellow_face]
-
-    def create_corresponding_yellow(self):
-        row_one = []
-        row_two = []
-        row_three = []
-        row_four = []
-
-        row_one.append(self.yellow_face[3][6])
-        row_two.append(self.yellow_face[3][4])
-        row_two.append(self.yellow_face[3][5])
-        row_two.append(self.yellow_face[2][4])
-
-    def match_hor_and_dia(self, row):
-        self.yellow_face[3][6] = row[0]
-        self.yellow_face[3][6] = self.yellow_face_left[0][0]
-        self.yellow_face[3][4] = self.yellow_face_left[1][0]
 
     def create_faces(self, face_color: str) -> list[list]:
         """
@@ -259,15 +241,6 @@ class Pyraminx:
         if row_num == 4:
             self.rearrange_green(is_clockwise)
 
-    def rotate_left_rows(self, is_clockwise: bool, row_num: int) -> None:
-        for front_sticker, left_sticker, right_sticker in zip(self.red_face_left[row_num-1], self.blue_face_left[row_num-1]):
-            if is_clockwise:
-                temp_sticker_1 = self.green_face[3][6]
-                temp_sticker_2 = self.yellow_face[3][6]
-                self.yellow_face[3][6] = temp_sticker_1
-                self.green_face[3][6] = self.red_face[3][0]
-                self.red_face[3][0] = temp_sticker_2
-
     def rotate_diagonal_layer(self, diagonal: int, is_clockwise: bool, layer: int) -> None:
         """
         Rotates the given diagonal for a specific layer using the green face tips as reference.
@@ -281,7 +254,7 @@ class Pyraminx:
                        G  <- 1 (rotates red,yellow,green)
                       GGG
                      GGGGG
-           3 -> GGGGGGG <- 2 (rotates red, blue, green)
+               3 -> GGGGGGG <- 2 (rotates red, blue, green)
         
         The 'layer' parameter specifies which layer (1 to 4) to rotate.
         """
@@ -320,26 +293,26 @@ class Pyraminx:
         elif diagonal == 2:
             # Diagonal from top-right to bottom-left, using the right tip of the green face as reference
             if layer == 1:
-                face2_indices = [(3, 6)]     # Red bottom-right
                 face1_indices = [(3, 0)]    # Blue bottom-left
+                face2_indices = [(3, 6)]     # Red bottom-right
                 green_indices = [(3, 6)]   # Green top-right (right tip)
                 face1 = self.blue_face
                 face2 = self.red_face
             elif layer == 2:
-                face2_indices = [(2, 4), (3, 4), (3, 5)]     # Second row of red
                 face1_indices = [(2, 0), (3, 1), (3, 2)]    # Second row of blue
+                face2_indices = [(2, 4), (3, 4), (3, 5)]     # Second row of red
                 green_indices = [(2, 4), (3, 4),(3, 5)]   # Second row of green (correcting indices)
                 face1 = self.blue_face
                 face2 = self.red_face
             elif layer == 3:
-                face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]     # Third row of red
                 face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]    # Third row of blue
+                face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]     # Third row of red
                 green_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]   # Third row of green (corrected)
                 face1 = self.blue_face
                 face2 = self.red_face
             elif layer == 4:
-                face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of red
                 face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of blue
+                face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of red
                 green_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of green
                 face1 = self.blue_face
                 face2 = self.red_face
@@ -384,7 +357,7 @@ class Pyraminx:
             temp = [face1[r][c] for r, c in face1_indices]
 
             # Perform clockwise shift
-            for i in range(len(face1_indices)):
+            for i in range(len(face1_indices)): #i is the picition of layers in the indice being passed
                 face1[face1_indices[i][0]][face1_indices[i][1]] = \
                     face2[face2_indices[i][0]][face2_indices[i][1]]
                 face2[face2_indices[i][0]][face2_indices[i][1]] = \
