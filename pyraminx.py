@@ -268,3 +268,130 @@ class Pyraminx:
                 self.green_face[3][6] = self.red_face[3][0]
                 self.red_face[3][0] = temp_sticker_2
 
+    def rotate_diagonal_layer(self, diagonal: str, is_clockwise: bool, layer: int) -> None:
+        """
+        Rotates the given diagonal for a specific layer using the green face tips as reference.
+        Handles the diagonal transformation for red, yellow, blue, and green faces.
+        
+        'first' -> Affects diagonal from top-left to bottom-right (left tip of green as reference).
+        'second' -> Affects diagonal from top-right to bottom-left (right tip of green as reference).
+        'third' -> Affects diagonal from bottom-left to top-right (bottom tip of green as reference).
+        
+        The 'layer' parameter specifies which layer (1 to 4) to rotate.
+        """
+        
+        if layer < 1 or layer > 4:
+            raise ValueError("Layer must be between 1 and 4")
+
+        # Predefined index mappings for the faces based on diagonal and layer
+        if diagonal == "first":
+            # Diagonal from top-left to bottom-right, using the left tip of the green face as reference
+            if layer == 1:
+                face1_indices  = [(3, 0)]     # Red bottom-left
+                face2_indices  = [(3, 6)]  # Yellow bottom-right
+                green_indices = [(3, 0)]   # Green top-left (left tip)
+                face1 = self.red_face
+                face2 = self.yellow_face
+            elif layer == 2:
+                face1_indices  = [(2, 0), (3, 1), (3, 2)]     # Second row of red
+                face2_indices  = [(2, 4), (3, 4), (3, 5)]  # Second row of yellow
+                green_indices = [(1, 0), (1, 1), (1, 2)]   # Second row of green
+                face1 = self.red_face
+                face2 = self.yellow_face
+            elif layer == 3:
+                face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]     # Third row of red
+                face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]  # Third row of yellow
+                green_indices = [(2, 0), (2, 1), (2, 2), (2,3), (2, 4)]   # Third row of green
+                face1 = self.red_face
+                face2 = self.yellow_face
+            elif layer == 4:
+                face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of red
+                face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of yellow
+                green_indices = [(3, 0), (3, 1), (3, 2), (3,3), (3, 4), (3, 5), (3, 6)]   # Fourth row of green
+                face1 = self.red_face
+                face2 = self.yellow_face
+
+        elif diagonal == "second":
+            # Diagonal from top-right to bottom-left, using the right tip of the green face as reference
+            if layer == 1:
+                face2_indices = [(3, 6)]     # Red bottom-right
+                face1_indices = [(3, 0)]    # Blue bottom-left
+                green_indices = [(3, 6)]   # Green top-right (right tip)
+                face1 = self.blue_face
+                face2 = self.red_face
+            elif layer == 2:
+                face2_indices = [(2, 4), (3, 4), (3, 5)]     # Second row of red
+                face1_indices = [(2, 0), (3, 1), (3, 2)]    # Second row of blue
+                green_indices = [(2, 4), (3, 4),(3, 5)]   # Second row of green (correcting indices)
+                face1 = self.blue_face
+                face2 = self.red_face
+            elif layer == 3:
+                face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]     # Third row of red
+                face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]    # Third row of blue
+                green_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]   # Third row of green (corrected)
+                face1 = self.blue_face
+                face2 = self.red_face
+            elif layer == 4:
+                face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of red
+                face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of blue
+                green_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of green
+                face1 = self.blue_face
+                face2 = self.red_face
+
+        elif diagonal == "third":
+            # Diagonal from bottom-left to top-right, using the bottom-left tip of the green face as reference
+            if layer == 1:
+                face1_indices = [(3, 0)]  # Yellow bottom-left
+                face2_indices = [(0, 0)]    # Blue bottom-right
+                green_indices = [(3, 0)]   # Green bottom-left (bottom tip)
+                face1 = self.yellow_face
+                face2 = self.blue_face
+            elif layer == 2:
+                face1_indices = [(2, 0), (3, 1), (3, 2)]  # Second row of yellow
+                face2_indices = [(2, 4), (3, 4), (3, 5)]    # Second row of blue
+                green_indices = [(2, 0), (3, 1), (3, 2)]   # Second row of green
+                face1 = self.yellow_face
+                face2 = self.blue_face
+            elif layer == 3:
+                face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]  # Third row of yellow
+                face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]    # Third row of blue
+                green_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]   # Third row of green
+                face1 = self.yellow_face
+                face2 = self.blue_face
+            elif layer == 4:
+                face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of yellow
+                face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]    # Fourth row of blue
+                green_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]   # Fourth row of green
+                face1 = self.yellow_face
+                face2 = self.blue_face
+        
+        # Apply the rotation for the selected layer
+        self._rotate_face_elements(face1, face2, self.green_face, face1_indices, face2_indices, green_indices, is_clockwise)
+
+    def _rotate_face_elements(self, face1, face2, green_face, face1_indices, face2_indices, green_indices, is_clockwise):
+        """
+        Rotates the elements of three faces (face1, face2, green) based on the given indices.
+        Uses clockwise or counterclockwise rotation.
+        """
+        if is_clockwise:
+            # Temporarily store the face1 values
+            temp = [face1[r][c] for r, c in face1_indices]
+
+            # Perform clockwise shift
+            for i in range(len(face1_indices)):
+                face1[face1_indices[i][0]][face1_indices[i][1]] = \
+                    face2[face2_indices[i][0]][face2_indices[i][1]]
+                face2[face2_indices[i][0]][face2_indices[i][1]] = \
+                    green_face[green_indices[i][0]][green_indices[i][1]]
+                green_face[green_indices[i][0]][green_indices[i][1]] = temp[i]
+        else:
+            # Temporarily store the green_face values
+            temp = [green_face[r][c] for r, c in green_indices]
+
+            # Perform counterclockwise shift
+            for i in range(len(face1_indices)):
+                green_face[green_indices[i][0]][green_indices[i][1]] = \
+                    face2[face2_indices[i][0]][face2_indices[i][1]]
+                face2[face2_indices[i][0]][face2_indices[i][1]] = \
+                    face1[face1_indices[i][0]][face1_indices[i][1]]
+                face1[face1_indices[i][0]][face1_indices[i][1]] = temp[i]
