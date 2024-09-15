@@ -1,40 +1,47 @@
-from pyraminx import Pyraminx
 import random
 
-
-"""
-Funtion:
-            randomizer(numMoves:  int)
-Description:
-            Function that takes integer numMoves as input to carry out number of randomized pyramix cube moves equal to numMoves.
-Arguments:
-            numMoves: Integer that especifies desired number of moves to scramble the pyramix. 
-"""
-
-def randomizer(numMoves: int, pyraminx):
-    for x in range(numMoves):
-        pyraminx = movePicker(pyraminx)
-
-    return pyraminx
+def randomizer(num_moves: int, pyraminx):
+    """
+    Randomizer function to scramble the Pyramix puzzle.
     
-
-"""
-Funtion:
-            movePicker():
-Description:
-            Function that calls a random move for the pyramix.
-"""
-def movePicker(pyraminx):
-    move = random.randrange(4)
-
-    match move:
-        case 0:
-            pyraminx.rotate_front_tip(False)
-        case 1:
-            pyraminx.rotate_front_two(False)
-        case 2:
-            pyraminx.rotate_front_tip(True)
-        case 3:
-            pyraminx.rotate_front_two(True)
+    Args:
+        num_moves: Integer specifying the number of random moves to apply.
+        pyraminx: The Pyraminx puzzle object to scramble.
+        
+    Returns:
+        The scrambled Pyramix puzzle.
+    """
+    for x in range(num_moves):
+        movePicker(pyraminx)
+        print(f"Stages of scramble:\n",pyraminx.print_pyraminx())
+        print(f"Move: {x+1}\n")
 
     return pyraminx
+
+
+def movePicker(pyraminx):
+    """
+    Function that randomly selects a move and applies it to the Pyramix.
+    
+    Moves include:
+    - Front face row rotation
+    - Left row rotation
+    - Diagonal layer rotation
+    
+    Args:
+        pyraminx: The Pyraminx puzzle object.
+    """
+    move_type = random.choice(["front_row", "diagonal"])
+    is_clockwise = random.choice([True, False])  # Randomly choose clockwise or counterclockwise
+    layer_or_row = random.randint(1, 4)  # Randomly choose a row or layer (1 to 4)
+    diagonal = random.randint(1, 3)  # Randomly choose a diagonal (1 to 4)
+
+    if move_type == "front_row":
+        # Rotate a front row (red face)
+        pyraminx.rotate_front_rows(is_clockwise, layer_or_row)
+    elif move_type == "diagonal":
+        # Rotate a diagonal layer (1, 2, or 3 diagonals)
+        diagonal = random.randint(1, 3)  # Randomly select one of the three diagonals
+        pyraminx.rotate_diagonal_layer(diagonal, is_clockwise, layer_or_row)
+    else:
+        print("Error, no move chosen.")

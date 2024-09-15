@@ -268,14 +268,20 @@ class Pyraminx:
                 self.green_face[3][6] = self.red_face[3][0]
                 self.red_face[3][0] = temp_sticker_2
 
-    def rotate_diagonal_layer(self, diagonal: str, is_clockwise: bool, layer: int) -> None:
+    def rotate_diagonal_layer(self, diagonal: int, is_clockwise: bool, layer: int) -> None:
         """
         Rotates the given diagonal for a specific layer using the green face tips as reference.
         Handles the diagonal transformation for red, yellow, blue, and green faces.
         
-        'first' -> Affects diagonal from top-left to bottom-right (left tip of green as reference).
-        'second' -> Affects diagonal from top-right to bottom-left (right tip of green as reference).
-        'third' -> Affects diagonal from bottom-left to top-right (bottom tip of green as reference).
+        '1' -> Affects diagonal from top-left to bottom-right (left tip of green as reference).
+        '2' -> Affects diagonal from top-right to bottom-left (right tip of green as reference).
+        '3' -> Affects diagonal from bottom-left to top-right (bottom tip of green as reference).
+           
+        Based on print view:
+                       G  <- 1 (rotates red,yellow,green)
+                      GGG
+                     GGGGG
+           3 -> GGGGGGG <- 2 (rotates red, blue, green)
         
         The 'layer' parameter specifies which layer (1 to 4) to rotate.
         """
@@ -284,7 +290,7 @@ class Pyraminx:
             raise ValueError("Layer must be between 1 and 4")
 
         # Predefined index mappings for the faces based on diagonal and layer
-        if diagonal == "first":
+        if diagonal == 1:
             # Diagonal from top-left to bottom-right, using the left tip of the green face as reference
             if layer == 1:
                 face1_indices  = [(3, 0)]     # Red bottom-left
@@ -311,7 +317,7 @@ class Pyraminx:
                 face1 = self.red_face
                 face2 = self.yellow_face
 
-        elif diagonal == "second":
+        elif diagonal == 2:
             # Diagonal from top-right to bottom-left, using the right tip of the green face as reference
             if layer == 1:
                 face2_indices = [(3, 6)]     # Red bottom-right
@@ -338,7 +344,7 @@ class Pyraminx:
                 face1 = self.blue_face
                 face2 = self.red_face
 
-        elif diagonal == "third":
+        elif diagonal == 3:
             # Diagonal from bottom-left to top-right, using the bottom-left tip of the green face as reference
             if layer == 1:
                 face1_indices = [(3, 0)]  # Yellow bottom-left
