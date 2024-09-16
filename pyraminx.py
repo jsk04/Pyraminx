@@ -268,7 +268,7 @@ class Pyraminx:
             if layer == 1:
                 face1_indices  = [(3, 0)]     # Red bottom-left
                 face2_indices  = [(3, 6)]  # Yellow bottom-right
-                green_indices = [(3, 0)]   # Green top-left (left tip)
+                green_indices = [(0, 0)]   # Green top-left (left tip)
                 face1 = self.red_face
                 face2 = self.yellow_face
             elif layer == 2:
@@ -321,7 +321,7 @@ class Pyraminx:
             # Diagonal from bottom-left to top-right, using the bottom-left tip of the green face as reference
             if layer == 1:
                 face1_indices = [(3, 0)]  # Yellow bottom-left
-                face2_indices = [(0, 0)]    # Blue bottom-right
+                face2_indices = [(3, 0)]    # Blue bottom-right
                 green_indices = [(3, 0)]   # Green bottom-left (bottom tip)
                 face1 = self.yellow_face
                 face2 = self.blue_face
