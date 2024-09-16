@@ -13,7 +13,7 @@ def randomizer(num_moves: int, pyraminx):
     """
     for x in range(num_moves):
         movePicker(pyraminx)
-        print(f"Stages of scramble:\n",pyraminx.print_pyraminx())
+        print(f"Stages of scramble:\n",pyraminx.print_pyraminx()) #This will be removed for actual players but it is included for grader to see functions working correctly
         print(f"Move: {x+1}\n")
 
     return pyraminx

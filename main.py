@@ -6,7 +6,8 @@ def main():
     
     print("Welcome to the Pyramix Simulator!")
     print("You can simulate the puzzle by performing different types of rotations.")
-    
+    print("Our puzzle does rotations using the red face as reference, here is a diagram of how the faces are located relative to each other:")
+    print("Unfolded view of pyramix:\nY R B\n  G")    
     # Game Mode Selection
     game_mode = int(input("Choose game mode:\n1. Free (Start with an unscrambled cube)\n2. Random (Start with a scrambled cube)\n"))
     
