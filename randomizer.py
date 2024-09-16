@@ -2,14 +2,14 @@ import random
 
 def randomizer(num_moves: int, pyraminx):
     """
-    Randomizer function to scramble the Pyramix puzzle.
+    Randomizer function to scramble the Pyraminx puzzle.
     
     Args:
         num_moves: Integer specifying the number of random moves to apply.
         pyraminx: The Pyraminx puzzle object to scramble.
         
     Returns:
-        The scrambled Pyramix puzzle.
+        The scrambled Pyraminx puzzle.
     """
     for x in range(num_moves):
         movePicker(pyraminx)
@@ -21,7 +21,7 @@ def randomizer(num_moves: int, pyraminx):
 
 def movePicker(pyraminx):
     """
-    Function that randomly selects a move and applies it to the Pyramix.
+    Function that randomly selects a move and applies it to the Pyraminx.
     
     Moves include:
     - Front face row rotation

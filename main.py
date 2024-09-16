@@ -4,10 +4,10 @@ from randomizer import randomizer
 def main():
     pyraminx = Pyraminx()
     
-    print("Welcome to the Pyramix Simulator!")
+    print("Welcome to the Pyraminx Simulator!")
     print("You can simulate the puzzle by performing different types of rotations.")
     print("Our puzzle does rotations using the red face as reference, here is a diagram of how the faces are located relative to each other:")
-    print("Unfolded view of pyramix:\nY R B\n  G")    
+    print("Unfolded view of Pyraminx:\nY R B\n  G")    
     # Game Mode Selection
     game_mode = int(input("Choose game mode:\n1. Free (Start with an unscrambled cube)\n2. Random (Start with a scrambled cube)\n"))
     
@@ -23,7 +23,7 @@ def main():
         move_type = int(input("\nChoose the type of rotation you want:\n1. Horizontal Rotation\n2. Diagonal Rotation\n3. Quit\n"))
         
         if move_type == 3:
-            print("Exiting the Pyramix Simulator. Goodbye!")
+            print("Exiting the Pyraminx Simulator. Goodbye!")
             break
         
         if move_type == 1:
