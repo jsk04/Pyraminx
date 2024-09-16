@@ -347,7 +347,7 @@ class Pyraminx:
         # Apply the rotation for the selected layer
         self._rotate_face_elements(face1, face2, self.green_face, face1_indices, face2_indices, green_indices, is_clockwise)
 
-    def _rotate_face_elements(self, face1, face2, green_face, face1_indices, face2_indices, green_indices, is_clockwise):
+    def _rotate_face_elements(self, face1, face2, green_face, face1_indices: list[tuple], face2_indices: list[tuple], green_indices: list[tuple], is_clockwise: bool) -> None:
         """
         Rotates the elements of three faces (face1, face2, green) based on the given indices.
         Uses clockwise or counterclockwise rotation.
