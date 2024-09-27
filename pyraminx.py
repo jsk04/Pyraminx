@@ -8,6 +8,7 @@ class sticker:
     def move(self, move_id):
         print(f'New pos:',move_id)
         print(f'Orig pos: ',self.original_position)
+        print(f'Color: ',self.color)
         self.move_stack.append(move_id) #Push new move onto stack
 
         # Check if the current position matches the original position
