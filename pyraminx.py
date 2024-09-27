@@ -6,9 +6,9 @@ class sticker:
         self.move_stack = [] #Stack to track moves
 
     def move(self, move_id):
-        print(f'New pos:',move_id)
+        print(f'New pos:', move_id)
         print(f'Orig pos: ',self.original_position)
-        print(f'Color: ',self.color)
+        print(f'Color: ', self.color)
         self.move_stack.append(move_id) #Push new move onto stack
 
         # Check if the current position matches the original position
@@ -18,6 +18,10 @@ class sticker:
     def moves_to_original_position(self) -> int:
         return len(self.move_stack) #Returns num moves to return to original position
 
+class tile:
+    def __init__(self, fixed_place: int) -> None:
+        self.fixed_place = fixed_place
+        self.move_stack = [] #Stack to track moves
 
 class Pyraminx:
     def __init__(self) -> None:
@@ -25,6 +29,11 @@ class Pyraminx:
         self.blue_face = []
         self.green_face = []
         self.yellow_face = []
+
+        self.red_tiles = []
+        self.blue_tiles = []
+        self.yellow_tiles = []
+        self.green_tiles = []
 
         self.initialize()
 
@@ -42,6 +51,11 @@ class Pyraminx:
         row_three = []
         row_four = []
 
+        row_one_tiles = []
+        row_two_tiles = []
+        row_three_tiles = []
+        row_four_tiles = []
+
         if face_color == "red":
             start_pos = 1
             end_pos = 17
@@ -57,25 +71,43 @@ class Pyraminx:
 
         for pos in range(start_pos, end_pos):
             if(pos == start_pos):
-                row_one.append(sticker(1, face_color))  
+                row_one.append(sticker(pos, face_color))  
+                row_one_tiles.append(tile(pos))
             if(pos in range(start_pos + 1, start_pos + 4)):
                 row_two.append(sticker(pos, face_color))
+                row_two_tiles.append(tile(pos))
             if(pos in range(start_pos + 4, start_pos + 9)):
                 row_three.append(sticker(pos, face_color))
+                row_three_tiles.append(tile(pos))
             if(pos in range(start_pos + 9, end_pos)):
                 row_four.append(sticker(pos, face_color))
+                row_four_tiles.append(tile(pos))
 
-        return [row_one, row_two, row_three, row_four]
+        face_info = {
+            "stickers" : [row_one, row_two, row_three, row_four],
+            "tiles" : [row_one_tiles, row_two_tiles, row_three_tiles, row_four_tiles]
+        }
+
+        return face_info
     
     def initialize(self):
         """
         Initialize all faces of pyraminx
         """
-    
-        self.red_face = self.create_faces("red")
-        self.blue_face = self.create_faces("blue")
-        self.yellow_face = self.create_faces("yellow")
-        self.green_face = self.create_faces("green")
+        red_info = self.create_faces("red")
+        blue_info = self.create_faces("blue")
+        green_info = self.create_faces("green")
+        yellow_info = self.create_faces("yellow")
+
+        self.red_face = red_info["stickers"]
+        self.blue_face = blue_info["stickers"]
+        self.yellow_face = yellow_info["stickers"]
+        self.green_face = green_info["stickers"]
+
+        self.red_tiles = red_info["tiles"]
+        self.blue_tiles = blue_info["tiles"]
+        self.yellow_tiles = yellow_info["tiles"]
+        self.green_tiles = green_info["tiles"]
 
     def color_matching(self, row_num):
         """
@@ -270,6 +302,16 @@ class Pyraminx:
 
         print(fourth_row_str)
 
+    def tally_green_tiles(self, i, j, new_position):
+        """
+        Given a tile, check to see if the sticker that's being moved into the tile 
+        is the original one. If not, add a tally to the stack of the tile.
+        """
+        if self.green_tiles[i][j].fixed_place == new_position:
+            self.green_tiles[i][j].move_stack.clear()
+        else:
+            self.green_tiles[i][j].move_stack.append("X")
+
     def rearrange_green(self, is_clockwise: bool) -> None:
         """
         Rearranges the green side when the 4th row of front face is rotated. 
@@ -281,26 +323,41 @@ class Pyraminx:
             temp_23 = self.green_face[2][3]
             temp_24 = self.green_face[2][4]
 
+            self.tally_green_tiles(0, 0, self.green_face[3][6].position)
             self.green_face[0][0] = self.green_face[3][6]
+            self.tally_green_tiles(1, 1, self.green_face[3][5].position)
             self.green_face[1][1] = self.green_face[3][5]
+            self.tally_green_tiles(1, 2, self.green_face[3][4].position)
             self.green_face[1][2] = self.green_face[3][4]
+            self.tally_green_tiles(2, 3, self.green_face[3][3].position)
             self.green_face[2][3] = self.green_face[3][3]
+            self.tally_green_tiles(2, 4, self.green_face[3][2].position)
             self.green_face[2][4] = self.green_face[3][2]
+            self.tally_green_tiles(3, 5, self.green_face[3][1].position)
             self.green_face[3][5] = self.green_face[3][1]
+            self.tally_green_tiles(3, 6, self.green_face[3][0].position)
             self.green_face[3][6] = self.green_face[3][0] 
 
             temp_10 = self.green_face[1][0]
             temp_21 = self.green_face[2][1]
             temp_20 = self.green_face[2][0]
 
+            self.tally_green_tiles(3, 0, temp_tip.position)
             self.green_face[3][0] = temp_tip
+            self.tally_green_tiles(3, 1, temp_11.position)
             self.green_face[3][1] = temp_11
+            self.tally_green_tiles(2, 0, temp_12.position)
             self.green_face[2][0] = temp_12
+            self.tally_green_tiles(2, 1, temp_23.position)
             self.green_face[2][1] = temp_23
+            self.tally_green_tiles(1, 0, temp_24.position)
             self.green_face[1][0] = temp_24
 
+            self.tally_green_tiles(3, 2, temp_10.position)
             self.green_face[3][2] = temp_10
+            self.tally_green_tiles(3, 3, temp_21.position)
             self.green_face[3][3] = temp_21
+            self.tally_green_tiles(3, 4, temp_20.position)
             self.green_face[3][4] = temp_20
         else:
             temp_11 = self.green_face[1][1]
@@ -308,39 +365,82 @@ class Pyraminx:
             temp_24 = self.green_face[2][4]
             temp_23 = self.green_face[2][3]
             temp_12 = self.green_face[1][2]
-
+            
+            self.tally_green_tiles(0, 0, self.green_face[3][0].position)
             self.green_face[0][0] = self.green_face[3][0]
+            self.tally_green_tiles(1, 1, self.green_face[3][1].position)
             self.green_face[1][1] = self.green_face[3][1]
+            self.tally_green_tiles(1, 2, self.green_face[2][0].position)
             self.green_face[1][2] = self.green_face[2][0]
+            self.tally_green_tiles(2, 3, self.green_face[2][1].position)
             self.green_face[2][3] = self.green_face[2][1]
+            self.tally_green_tiles(2, 4, self.green_face[1][0].position)
             self.green_face[2][4] = self.green_face[1][0]
+            self.tally_green_tiles(3, 5, temp_11.position)
             self.green_face[3][5] = temp_11
-            self.green_face[3][6] = temp_00
+            self.tally_green_tiles(3, 2, temp_00.position)
+            self.green_face[3][2] = temp_00
 
+            self.tally_green_tiles(1, 0, self.green_face[3][2].position)
             self.green_face[1][0] = self.green_face[3][2]
+            self.tally_green_tiles(2, 1, self.green_face[3][3].position)
             self.green_face[2][1] = self.green_face[3][3]
+            self.tally_green_tiles(2, 0, self.green_face[3][4].position)
             self.green_face[2][0] = self.green_face[3][4]
+            self.tally_green_tiles(3, 1, self.green_face[3][5].position)
             self.green_face[3][1] = self.green_face[3][5]
+            self.tally_green_tiles(3, 0, self.green_face[3][6].position)
             self.green_face[3][0] = self.green_face[3][6]
 
+            self.tally_green_tiles(3, 2, temp_24.position)
             self.green_face[3][2] = temp_24
+            self.tally_green_tiles(3, 3, temp_23.position)
             self.green_face[3][3] = temp_23
+            self.tally_green_tiles(3, 4, temp_12.position)
             self.green_face[3][4] = temp_12
+
+    # def append_position_row(self, original_row, changed_row):
+    #     """
+    #     For a given row, append the new positions on each sticker into the sticker's stack
+    #     """
+    #     for original_sticker, changed_sticker in zip(original_row, changed_row):
+    #         print(f"This is the sticker that's being changed: ", original_sticker.position)
+    #         original_sticker.move(changed_sticker.position)
+
+    def tally_row_tiles(self, face: list[list], tiles: list[list], row_num: int) -> None:
+        """
+        Given a face and its tiles and the row number, check to see if the sticker that's being moved into the tile 
+        is the original one. If not, add a tally to the stack of the tile.
+        """
+        for sticker, tile in zip(face[row_num-1], tiles[row_num-1]):
+            # print(sticker.position)
+            if tile.fixed_place == sticker.position:
+                tile.move_stack.clear()
+            else:
+                # print(tile.fixed_place)
+                tile.move_stack.append("X")
 
     def rotate_front_rows(self, is_clockwise: bool, row_num: int) -> None:
         """
         Rotate a row of the front face(which is red) given the direction and row number
         """
         if is_clockwise:
-            temp_row = self.red_face[row_num-1]
+            temp_red = self.red_face[row_num-1]
+            temp_blue = self.blue_face[row_num-1]
+            temp_yellow = self.yellow_face[row_num-1]
+
             self.red_face[row_num-1] = self.blue_face[row_num-1]
             self.blue_face[row_num-1] = self.yellow_face[row_num-1]
-            self.yellow_face[row_num-1] = temp_row
+            self.yellow_face[row_num-1] = temp_red
         else:
             temp_row = self.red_face[row_num-1]
             self.red_face[row_num-1] = self.yellow_face[row_num-1]
             self.yellow_face[row_num-1] = self.blue_face[row_num-1]
             self.blue_face[row_num-1] = temp_row
+
+        self.tally_row_tiles(self.red_face, self.red_tiles, row_num)
+        self.tally_row_tiles(self.blue_face, self.blue_tiles, row_num)
+        self.tally_row_tiles(self.yellow_face, self.yellow_tiles, row_num)
 
         if row_num == 4:
             self.rearrange_green(is_clockwise)
