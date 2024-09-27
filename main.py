@@ -32,6 +32,7 @@ def main():
             direction = int(input("\nChoose rotation direction:\n1. Clockwise\n2. Counterclockwise\n"))
             is_clockwise = True if direction == 1 else False
             pyraminx.rotate_front_rows(is_clockwise, layer)
+            pyraminx.print_pyraminx_stack_size()
         
         elif move_type == 2:
             # Diagonal Rotation
@@ -40,6 +41,7 @@ def main():
             direction = int(input("\nChoose rotation direction:\n1. Clockwise\n2. Counterclockwise\n"))
             is_clockwise = True if direction == 1 else False
             pyraminx.rotate_diagonal_layer(diagonal, is_clockwise, layer)
+            pyraminx.print_pyraminx_stack_size()
         
         # Display the updated cube after each move
         pyraminx.print_pyraminx()
