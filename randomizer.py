@@ -13,8 +13,6 @@ def randomizer(num_moves: int, pyraminx):
     """
     for x in range(num_moves):
         movePicker(pyraminx)
-        print(f"Stages of scramble:\n",pyraminx.print_pyraminx()) #This will be removed for actual players but it is included for grader to see functions working correctly
-        print(f"Move: {x+1}\n")
 
     return pyraminx
 
@@ -22,25 +20,16 @@ def randomizer(num_moves: int, pyraminx):
 def movePicker(pyraminx):
     """
     Function that randomly selects a move and applies it to the Pyraminx.
-    
-    Moves include:
-    - Front face row rotation
-    - Left row rotation
-    - Diagonal layer rotation
+    Moves include front face row rotation or diagonal layer rotation.
     
     Args:
         pyraminx: The Pyraminx puzzle object.
     """
     move_type = random.choice(["front_row", "diagonal"])
-    #is_clockwise = random.choice([True, False])  # Randomly choose clockwise or counterclockwise - Commented out randomize clockwise only
     layer_or_row = random.randint(1, 4)  # Randomly choose a row or layer (1 to 4)
-    diagonal = random.randint(1, 3)  # Randomly choose a diagonal (1 to 4)
+    diagonal = random.randint(1, 3)  # Randomly choose a diagonal (1 to 3)
 
     if move_type == "front_row":
-        # Rotate a front row (red face)
-        pyraminx.rotate_front_rows(True, layer_or_row)
+        pyraminx.rotate_front_rows(True, layer_or_row)  # Clockwise only
     elif move_type == "diagonal":
-        # Rotate a diagonal layer (1, 2, or 3 diagonals)
-        pyraminx.rotate_diagonal_layer(diagonal, True, layer_or_row)
-    else:
-        print("Error, no move chosen.")
+        pyraminx.rotate_diagonal_layer(diagonal, True, layer_or_row)  # Clockwise only

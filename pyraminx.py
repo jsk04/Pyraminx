@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 class sticker:
     def __init__(self, position: int, color: str) -> None:
         self.position = position
@@ -6,10 +8,10 @@ class sticker:
 class Pyraminx:
     def __init__(self, instance=None) -> None:
         if instance is not None and isinstance(instance, Pyraminx):
-            self.red_face = instance.red_face
-            self.blue_face = instance.blue_face
-            self.green_face = instance.green_face
-            self.yellow_face = instance.yellow_face
+            self.red_face = deepcopy(instance.red_face)
+            self.blue_face = deepcopy(instance.blue_face)
+            self.green_face = deepcopy(instance.green_face)
+            self.yellow_face = deepcopy(instance.yellow_face)
         else:
             self.red_face = []
             self.blue_face = []
@@ -31,11 +33,6 @@ class Pyraminx:
         row_two = []
         row_three = []
         row_four = []
-
-        row_one_tiles = []
-        row_two_tiles = []
-        row_three_tiles = []
-        row_four_tiles = []
 
         if face_color == "red":
             start_pos = 1
@@ -292,27 +289,18 @@ class Pyraminx:
                 green_indices = [(0, 0)]   # Green top-left (left tip)
                 face1 = self.red_face
                 face2 = self.yellow_face
-                face1_tiles = self.red_tiles
-                face2_tiles = self.yellow_tiles
-                green_tiles = self.green_tiles
             elif layer == 2:
                 face1_indices  = [(2, 0), (3, 1), (3, 2)]     # Second row of red
                 face2_indices  = [(2, 4), (3, 4), (3, 5)]  # Second row of yellow
                 green_indices = [(1, 0), (1, 1), (1, 2)]   # Second row of green
                 face1 = self.red_face
                 face2 = self.yellow_face
-                face1_tiles = self.red_tiles
-                face2_tiles = self.yellow_tiles
-                green_tiles = self.green_tiles
             elif layer == 3:
                 face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]     # Third row of red
                 face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]  # Third row of yellow
                 green_indices = [(2, 0), (2, 1), (2, 2), (2,3), (2, 4)]   # Third row of green
                 face1 = self.red_face
                 face2 = self.yellow_face
-                face1_tiles = self.red_tiles
-                face2_tiles = self.yellow_tiles
-                green_tiles = self.green_tiles
 
             elif layer == 4:
                 face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of red
@@ -320,9 +308,6 @@ class Pyraminx:
                 green_indices = [(3, 0), (3, 1), (3, 2), (3,3), (3, 4), (3, 5), (3, 6)]   # Fourth row of green
                 face1 = self.red_face
                 face2 = self.yellow_face
-                face1_tiles = self.red_tiles
-                face2_tiles = self.yellow_tiles
-                green_tiles = self.green_tiles
 
 
         elif diagonal == 2:
@@ -333,9 +318,6 @@ class Pyraminx:
                 green_indices = [(3, 6)]   # Green top-right (right tip)
                 face1 = self.blue_face
                 face2 = self.red_face
-                face1_tiles = self.blue_tiles
-                face2_tiles = self.red_tiles
-                green_tiles = self.green_tiles
 
             elif layer == 2:
                 face1_indices = [(2, 0), (3, 1), (3, 2)]    # Second row of blue
@@ -343,27 +325,18 @@ class Pyraminx:
                 green_indices = [(2, 4), (3, 4),(3, 5)]   # Second row of green (correcting indices)
                 face1 = self.blue_face
                 face2 = self.red_face
-                face1_tiles = self.blue_tiles
-                face2_tiles = self.red_tiles
-                green_tiles = self.green_tiles
             elif layer == 3:
                 face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]    # Third row of blue
                 face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]     # Third row of red
                 green_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]   # Third row of green (corrected)
                 face1 = self.blue_face
                 face2 = self.red_face
-                face1_tiles = self.blue_tiles
-                face2_tiles = self.red_tiles
-                green_tiles = self.green_tiles
             elif layer == 4:
                 face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of blue
                 face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of red
                 green_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of green
                 face1 = self.blue_face
                 face2 = self.red_face
-                face1_tiles = self.blue_tiles
-                face2_tiles = self.red_tiles
-                green_tiles = self.green_tiles
 
         elif diagonal == 3:
             # Diagonal from bottom-left to top-right, using the bottom-left tip of the green face as reference
@@ -373,9 +346,6 @@ class Pyraminx:
                 green_indices = [(3, 0)]   # Green bottom-left (bottom tip)
                 face1 = self.yellow_face
                 face2 = self.blue_face
-                face1_tiles = self.yellow_tiles
-                face2_tiles = self.blue_tiles
-                green_tiles = self.green_tiles
 
             elif layer == 2:
                 face1_indices = [(2, 0), (3, 1), (3, 2)]  # Second row of yellow
@@ -383,9 +353,6 @@ class Pyraminx:
                 green_indices = [(2, 0), (3, 1), (3, 2)]   # Second row of green
                 face1 = self.yellow_face
                 face2 = self.blue_face
-                face1_tiles = self.yellow_tiles
-                face2_tiles = self.blue_tiles
-                green_tiles = self.green_tiles
 
             elif layer == 3:
                 face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]  # Third row of yellow
@@ -393,9 +360,6 @@ class Pyraminx:
                 green_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]   # Third row of green
                 face1 = self.yellow_face
                 face2 = self.blue_face
-                face1_tiles = self.yellow_tiles
-                face2_tiles = self.blue_tiles
-                green_tiles = self.green_tiles
 
             elif layer == 4:
                 face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of yellow
@@ -403,9 +367,6 @@ class Pyraminx:
                 green_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]   # Fourth row of green
                 face1 = self.yellow_face
                 face2 = self.blue_face
-                face1_tiles = self.yellow_tiles
-                face2_tiles = self.blue_tiles
-                green_tiles = self.green_tiles
 
         
         # Apply the rotation for the selected layer
@@ -514,3 +475,17 @@ class pyraminx_state:
         Less than function for heap comparison
         """
         return self.f_cost < other.f_cost
+    
+    def __eq__(self, other):
+        if isinstance(other, pyraminx_state):
+            return self.get_state_representation() == other.get_state_representation()
+        return False
+
+    def __hash__(self):
+        return hash(self.get_state_representation())
+
+    def get_state_representation(self):
+        # Flatten all the face stickers into a tuple of colors for easy comparison and hashing
+        return tuple(
+            sticker.color for face in self.state.faces for row in face for sticker in row
+        )
