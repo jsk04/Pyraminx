@@ -42,6 +42,11 @@ class Pyraminx:
                       self.green_face,
                       self.yellow_face]
 
+        self.tiles = [self.red_tiles,
+                      self.blue_tiles,
+                      self.green_tiles,
+                      self.yellow_tiles]
+
     def create_faces(self, face_color: str) -> list[list]:
         """
         Given the face color, return the array that stores all stickers of that face
@@ -584,3 +589,16 @@ class Pyraminx:
                 face2[face2_indices[i][0]][face2_indices[i][1]] = \
                     face1[face1_indices[i][0]][face1_indices[i][1]]
                 face1[face1_indices[i][0]][face1_indices[i][1]] = temp[i]
+
+class pyraminx_state:
+    def __init__(self, state: Pyraminx, g_cost, parent) -> None:
+        self.state = state
+        self.g_cost = g_cost
+        self.h_cost = self.heuristic
+        self.f_cost = self.g_cost + self.h_cost
+        self.parent = parent
+
+    def heuristic(self):
+        for face in self.state:
+            for row in face:
+                
