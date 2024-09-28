@@ -1,22 +1,7 @@
 class sticker:
     def __init__(self, position: int, color: str) -> None:
         self.position = position
-        self.original_position = position  # Track the original position of the sticker
         self.color = color
-        self.move_stack = [] #Stack to track moves
-
-    def move(self, move_id):
-        print(f'New pos:', move_id)
-        print(f'Orig pos: ',self.original_position)
-        print(f'Color: ', self.color)
-        self.move_stack.append(move_id) #Push new move onto stack
-
-        # Check if the current position matches the original position
-        if move_id == self.original_position:
-            self.move_stack.clear() # Sticker is back to its original position, so clear the stack
-
-    def moves_to_original_position(self) -> int:
-        return len(self.move_stack) #Returns num moves to return to original position
 
 class tile:
     def __init__(self, fixed_place: int) -> None:
@@ -149,96 +134,6 @@ class Pyraminx:
         }
         
         return starting_space_count[row_num]
-
-    def print_pyraminx_stack_size(self):
-        """
-        Prints the current state of the pyraminx showing the stack size of each sticker instead of color.
-        """
-
-        def stack_size_matching(row_num):
-            """
-            Helper function: Given a row number, return the corresponding stack size for that row in all faces
-            """
-            row_stack_sizes = []
-            for face in self.faces:
-                row = face[row_num]
-                for sticker in row:
-                    row_stack_sizes.append(str(len(sticker.move_stack)))  # Get the size of each sticker's stack
-            return row_stack_sizes
-
-        def determine_spaces(row_num):
-            """
-            Helper function: Given a row number, return a list that has the number of spaces needed for printing.
-            """
-            starting_space_count = {
-                1: [6, 14],
-                2: [4, 10],
-                3: [2, 6],
-                4: [0, 2]
-            }
-            return starting_space_count[row_num]
-
-        # Print the stack sizes row by row
-
-        # For row #1
-        stack_sizes_1 = stack_size_matching(0)
-        space_count_1 = determine_spaces(1)
-        first_row_str = " " * space_count_1[0]
-        for stack_size in stack_sizes_1:
-            first_row_str += stack_size
-            first_row_str += " " * space_count_1[1]
-        print(first_row_str)
-
-        # For row #2
-        stack_sizes_2 = stack_size_matching(1)
-        space_count_2 = determine_spaces(2)
-        second_row_str = " " * space_count_2[0]
-        i = 1
-        for stack_size in stack_sizes_2:
-            second_row_str += stack_size
-            if i % 3 == 0:
-                second_row_str += " " * space_count_2[1]
-            else:
-                second_row_str += " "
-            i += 1
-        print(second_row_str)
-
-        # For row #3
-        stack_sizes_3 = stack_size_matching(2)
-        space_count_3 = determine_spaces(3)
-        third_row_str = " " * space_count_3[0]
-        i = 1
-        for stack_size in stack_sizes_3:
-            third_row_str += stack_size
-            if i % 5 == 0:
-                third_row_str += " " * space_count_3[1]
-            else:
-                third_row_str += " "
-            i += 1
-        print(third_row_str)
-
-        # For row #4
-        stack_sizes_4 = stack_size_matching(3)
-        space_count_4 = determine_spaces(4)
-        fourth_row_str = " " * space_count_4[0]
-        i = 1
-        for stack_size in stack_sizes_4:
-            fourth_row_str += stack_size
-            if i % 7 == 0:
-                fourth_row_str += " " * space_count_4[1]
-            else:
-                fourth_row_str += " "
-            i += 1
-        print(fourth_row_str)
-
-
-        def calculate_heuristic(self) -> int:
-            max_moves = 0
-            for face in self.faces:
-                for row in face:
-                    for sticker in row:
-                        max_moves = max(max_moves, sticker.moves_to_original_position())
-            return max_moves
 
     def print_pyraminx(self):
         """
@@ -404,21 +299,13 @@ class Pyraminx:
             self.tally_green_tiles(3, 4, temp_12.position)
             self.green_face[3][4] = temp_12
 
-    # def append_position_row(self, original_row, changed_row):
-    #     """
-    #     For a given row, append the new positions on each sticker into the sticker's stack
-    #     """
-    #     for original_sticker, changed_sticker in zip(original_row, changed_row):
-    #         print(f"This is the sticker that's being changed: ", original_sticker.position)
-    #         original_sticker.move(changed_sticker.position)
-
     def tally_row_tiles(self, face: list[list], tiles: list[list], row_num: int) -> None:
         """
         Given a face and its tiles and the row number, check to see if the sticker that's being moved into the tile 
         is the original one. If not, add a tally to the stack of the tile.
         """
         for sticker, tile in zip(face[row_num-1], tiles[row_num-1]):
-            #print(f'Sticker position: ', sticker.position)
+            # print(sticker.position)
             if tile.fixed_place == sticker.position:
                 tile.move_stack.clear()
             else:
@@ -427,6 +314,7 @@ class Pyraminx:
                 else:
                     #print(f'Tile position: ', tile.fixed_place)
                     tile.move_stack.append(sticker.position)
+
 
     def rotate_front_rows(self, is_clockwise: bool, row_num: int) -> None:
         """
@@ -650,4 +538,33 @@ class pyraminx_state:
         max_stack_size = 0
         for face in self.state.tiles:
             for row in face:
-                
+                for tile in row:
+                    if len(tile.move_stack) > max_stack_size:
+                        max_stack_size = len(tile.move_stack)
+        
+        return max_stack_size
+
+    def apply_horizontal_moves(self, row_num):
+        child = Pyraminx(self.state)
+        child.rotate_front_rows(False, row_num)
+
+        return child
+    
+    def apply_diagonal_moves(self, diagonal_num, row_num):
+        child = Pyraminx(self.state)
+
+    def generate_child_states(self):
+        """
+        Generate all possible moves and return new pyraminx states
+        """
+        child_states = []
+        # Front row moves
+        for row_num in range(1, 5):
+            child_states.append(self.apply_horizontal_moves(row_num))
+
+        #Diagonal moves
+
+    def is_solved(self):
+        """
+        Checks the instance of this state to see if it's the solved state
+        """
