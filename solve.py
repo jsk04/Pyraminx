@@ -4,8 +4,10 @@ from randomizer import randomizer
 import heapq
 import matplotlib.pyplot as plt
 
-# Function to solve the Pyraminx using A*
 def a_star_solve(initial_state):
+    """
+    Implements the A* algorithm to solve a randomized pyraminx from the given initial state
+    """
     open_list = []
     closed_list = set()
 
@@ -35,17 +37,21 @@ def a_star_solve(initial_state):
     print("No solution found after max iterations.")
     return None, nodes_expanded
 
-# Function to reconstruct the path from the goal to the initial state
 def reconstruct_path(state):
+    """
+    Reconstructs the path taken by the algorithm to reach the solved state
+    """
     path = []
     while state.parent:
         path.append(state)
         state = state.parent
 
     return path[::-1]
-
-# Function to run k-randomized puzzles and solve them using A*
+    
 def run_k_randomized_puzzles():
+    """
+    Runs k-randomized puzzles and solves them using the A* solve function
+    """
     k_values = list(range(3, 5))  # For k from 4 to 20
     average_nodes_expanded_per_k = []
 

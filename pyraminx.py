@@ -429,6 +429,9 @@ class pyraminx_state:
         return max(red_heuristic, blue_heuristic, yellow_heuristic, green_heuristic)
             
     def apply_horizontal_moves(self, row_num: int):
+        """
+        Applies all 4 horizontal moves in the counter-clockwise direction
+        """
         child = Pyraminx(self.state)
         # print(f"This is what's in the red tip of this child: ", child.red_face[0][0].color)
         child.rotate_front_rows(False, row_num)
@@ -438,6 +441,9 @@ class pyraminx_state:
         return pyraminx_state(child, self.g_cost + 1, self)
     
     def apply_diagonal_moves(self, diagonal_num: int, row_num: int):
+        """
+        Applied all 12 diagonal moves in the counter-clockwise direction
+        """
         child = Pyraminx(self.state)
         # print(f"This is what's in the corner tip of this child: ", child.red_face[3][0].color)
         child.rotate_diagonal_layer(diagonal_num, False, row_num)
@@ -477,14 +483,20 @@ class pyraminx_state:
         return self.f_cost < other.f_cost
     
     def __eq__(self, other):
+        """
+        """
         if isinstance(other, pyraminx_state):
             return self.get_state_representation() == other.get_state_representation()
         return False
 
     def __hash__(self):
+        """
+        """
         return hash(self.get_state_representation())
 
     def get_state_representation(self):
+        """
+        """
         # Flatten all the face stickers into a tuple of colors for easy comparison and hashing
         return tuple(
             sticker.color for face in self.state.faces for row in face for sticker in row
