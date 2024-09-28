@@ -24,7 +24,7 @@ class tile:
         self.move_stack = [] #Stack to track moves
 
 class Pyraminx:
-    def __init__(self) -> None:
+    def __init__(self, instance=None) -> None:
         self.red_face = []
         self.blue_face = []
         self.green_face = []
@@ -643,7 +643,11 @@ class pyraminx_state:
         self.f_cost = self.g_cost + self.h_cost
         self.parent = parent
 
-    def heuristic(self):
-        for face in self.state:
+    def heuristic(self) -> int:
+        """
+        Calculates the heurtistic for the instance of this state
+        """
+        max_stack_size = 0
+        for face in self.state.tiles:
             for row in face:
-                None
+                
