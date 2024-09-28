@@ -24,7 +24,7 @@ class tile:
         self.move_stack = [] #Stack to track moves
 
 class Pyraminx:
-    def __init__(self) -> None:
+    def __init__(self, instance=None) -> None:
         self.red_face = []
         self.blue_face = []
         self.green_face = []
@@ -640,7 +640,40 @@ class pyraminx_state:
         self.f_cost = self.g_cost + self.h_cost
         self.parent = parent
 
-    def heuristic(self):
-        for face in self.state:
+    def heuristic(self) -> int:
+        """
+        Calculates the heurtistic for the instance of this state
+        """
+        max_stack_size = 0
+        for face in self.state.tiles:
             for row in face:
-                
+                for tile in row:
+                    if len(tile.move_stack) > max_stack_size:
+                        max_stack_size = len(tile.move_stack)
+        
+        return max_stack_size
+
+    def apply_horizontal_moves(self, row_num):
+        child = Pyraminx(self.state)
+        child.rotate_front_rows(False, row_num)
+
+        return child
+    
+    def apply_diagonal_moves(self, diagonal_num, row_num):
+        child = Pyraminx(self.state)
+
+    def generate_child_states(self):
+        """
+        Generate all possible moves and return new pyraminx states
+        """
+        child_states = []
+        # Front row moves
+        for row_num in range(1, 5):
+            child_states.append(self.apply_horizontal_moves(row_num))
+
+        #Diagonal moves
+
+    def is_solved(self):
+        """
+        Checks the instance of this state to see if it's the solved state
+        """
