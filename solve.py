@@ -46,7 +46,7 @@ def reconstruct_path(state):
 
 # Function to run k-randomized puzzles and solve them using A*
 def run_k_randomized_puzzles():
-    k_values = list(range(3, 12))  # For k from 3 to 8
+    k_values = list(range(3, 5))  # For k from 4 to 20
     average_nodes_expanded_per_k = []
 
     for k in k_values:
@@ -76,8 +76,6 @@ def run_k_randomized_puzzles():
                     state.state.print_pyraminx()  # Assuming Pyraminx has a method to print its current state
             else:
                 print(f"No solution found for puzzle {i + 1} (k={k}).")
-                print("Puzzle configuration that failed to solve:")
-                pyraminx.print_pyraminx()  # Print the scrambled Pyraminx configuration
 
         # Calculate average nodes expanded for current k
         average_nodes_expanded = sum(nodes_expanded_list) / len(nodes_expanded_list)
@@ -94,4 +92,3 @@ def run_k_randomized_puzzles():
 
 # Run the function to solve puzzles and generate the plot
 run_k_randomized_puzzles()
-
