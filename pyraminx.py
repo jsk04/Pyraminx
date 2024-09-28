@@ -600,7 +600,7 @@ class Pyraminx:
         self._rotate_face_elements(face1, face2, self.green_face, face1_indices, face2_indices, green_indices, is_clockwise)
 
         # Update the tile stacks using tally_row_tiles
-        for row in range(1, layer + 1):
+        for row in range(1, 4):
             self.tally_row_tiles(face1, face1_tiles, row)
             self.tally_row_tiles(face2, face2_tiles, row)
             self.tally_row_tiles(self.green_face, green_tiles, row)
