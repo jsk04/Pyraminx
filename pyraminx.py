@@ -408,96 +408,90 @@ class pyraminx_state:
         self.parent = parent
 
     def heuristic_helper(self, face: list[list], color: str) -> int:
-        face_colors = []
+        """
+        Calculates a more advanced heuristic score for a face.
+        - Counts the number of misplaced stickers.
+        """
+        misplaced_count = 0
         for row in face:
             for sticker in row:
                 if sticker.color != color:
-                    if sticker.color not in face_colors:
-                        face_colors.append(sticker.color)
-        
-        return len(face_colors)
+                    misplaced_count += 1
+        return misplaced_count
 
     def heuristic(self) -> int:
         """
-        Calculates the heurtistic for the instance of this state
+        Enhanced heuristic function that:
+        - Calculates the number of misplaced stickers for each face.
+        - Considers different layers with different weights to provide more depth.
         """
-        red_heuristic = self.heuristic_helper(self.state.red_face, "red")
-        blue_heuristic = self.heuristic_helper(self.state.blue_face, "blue")
-        yellow_heuristic = self.heuristic_helper(self.state.yellow_face, "yellow")
-        green_heuristic = self.heuristic_helper(self.state.green_face, "green")
+        red_misplaced = self.heuristic_helper(self.state.red_face, "red")
+        blue_misplaced = self.heuristic_helper(self.state.blue_face, "blue")
+        yellow_misplaced = self.heuristic_helper(self.state.yellow_face, "yellow")
+        green_misplaced = self.heuristic_helper(self.state.green_face, "green")
         
-        return max(red_heuristic, blue_heuristic, yellow_heuristic, green_heuristic)
-            
+        # Weight the misplaced stickers by their depth (deeper stickers are harder to correct)
+        weight_factor = [1, 2, 3, 4]  # Assign increasing weights to rows based on their depth
+        weighted_heuristic = 0
+        for face in [self.state.red_face, self.state.blue_face, self.state.yellow_face, self.state.green_face]:
+            for i, row in enumerate(face):
+                row_misplaced = sum(1 for sticker in row if sticker.color != face[0][0].color)
+                weighted_heuristic += weight_factor[i] * row_misplaced
+
+        # Return the maximum of misplaced colors or weighted heuristic to balance between different measures
+        return max(red_misplaced, blue_misplaced, yellow_misplaced, green_misplaced, weighted_heuristic)
+
     def apply_horizontal_moves(self, row_num: int):
-        """
-        Applies all 4 horizontal moves in the counter-clockwise direction
-        """
         child = Pyraminx(self.state)
-        # print(f"This is what's in the red tip of this child: ", child.red_face[0][0].color)
         child.rotate_front_rows(False, row_num)
-        # print(f"This is what's in the red tip of this child after: ", child.red_face[0][0].color)
 
         # Child's g_cost will be one plus the parent's g_cost
         return pyraminx_state(child, self.g_cost + 1, self)
     
     def apply_diagonal_moves(self, diagonal_num: int, row_num: int):
-        """
-        Applied all 12 diagonal moves in the counter-clockwise direction
-        """
         child = Pyraminx(self.state)
-        # print(f"This is what's in the corner tip of this child: ", child.red_face[3][0].color)
         child.rotate_diagonal_layer(diagonal_num, False, row_num)
-        # print(f"This is what's in the corner tip of this child after: ", child.red_face[3][0].color)
 
         return pyraminx_state(child, self.g_cost + 1, self)
     
     def generate_child_states(self) -> list:
         """
-        Generate all possible moves and return new pyraminx states
+        Generate all possible moves and return new pyraminx states.
         """
         child_states = []
         # Front row moves
         for row_num in range(1, 5):
             child_states.append(self.apply_horizontal_moves(row_num))
 
-        #Diagonal moves
+        # Diagonal moves
         for diagonal_num in range(1, 4):
             for row_num in range(1, 5):
                 child_states.append(self.apply_diagonal_moves(diagonal_num, row_num))
 
-        return(child_states)
+        return child_states
     
     def is_solved(self) -> bool:
         """
-        Checks the instance of this state to see if it's the solved state
+        Checks if this state represents a solved Pyraminx.
         """
-        if self.h_cost == 0:
-            return True
-        else:
-            return False
+        return self.h_cost == 0
     
     def __lt__(self, other):
         """
-        Less than function for heap comparison
+        Less than function for heap comparison.
         """
         return self.f_cost < other.f_cost
     
     def __eq__(self, other):
-        """
-        """
         if isinstance(other, pyraminx_state):
             return self.get_state_representation() == other.get_state_representation()
         return False
 
     def __hash__(self):
-        """
-        """
         return hash(self.get_state_representation())
 
     def get_state_representation(self):
-        """
-        """
-        # Flatten all the face stickers into a tuple of colors for easy comparison and hashing
+        # Flatten all the face stickers into a tuple of colors for easy comparison and hashing.
         return tuple(
             sticker.color for face in self.state.faces for row in face for sticker in row
         )
