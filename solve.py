@@ -11,7 +11,7 @@ def a_star_solve(initial_state):
 
     heapq.heappush(open_list, initial_state)
 
-    max_iterations = 300  # Prevent infinite loops or excessive runtime
+    max_iterations = 10000  # Prevent infinite loops or excessive runtime
     iteration = 0
     nodes_expanded = 0  # Counter for the number of nodes expanded
 
@@ -46,7 +46,7 @@ def reconstruct_path(state):
 
 # Function to run k-randomized puzzles and solve them using A*
 def run_k_randomized_puzzles():
-    k_values = list(range(3, 6))  # For k from 3 to 8
+    k_values = list(range(3, 12))  # For k from 3 to 8
     average_nodes_expanded_per_k = []
 
     for k in k_values:
