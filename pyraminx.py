@@ -535,12 +535,12 @@ class Pyraminx:
                 face1[face1_indices[i][0]][face1_indices[i][1]] = temp[i]
 
 class pyraminx_state:
-    def __init__(self, state: Pyraminx, g_cost: int) -> None:
+    def __init__(self, state: Pyraminx, g_cost: int, parent=None) -> None:
         self.state = state
         self.g_cost = g_cost
         self.h_cost = self.heuristic()
         self.f_cost = self.g_cost + self.h_cost
-        # self.parent = parent
+        self.parent = parent
 
     def heuristic(self) -> int:
         """
@@ -557,19 +557,20 @@ class pyraminx_state:
 
     def apply_horizontal_moves(self, row_num):
         child = Pyraminx(self.state)
-        print(f"This is what's in the red tip of this child: ", child.red_face[0][0].color)
+        # print(f"This is what's in the red tip of this child: ", child.red_face[0][0].color)
         child.rotate_front_rows(False, row_num)
-        print(f"This is what's in the red tip of this child after: ", child.red_face[0][0].color)
+        # print(f"This is what's in the red tip of this child after: ", child.red_face[0][0].color)
 
-        return child
+        # Child's g_cost will be one plus the parent's g_cost
+        return pyraminx_state(child, self.g_cost + 1, self)
     
     def apply_diagonal_moves(self, diagonal_num, row_num):
         child = Pyraminx(self.state)
-        print(f"This is what's in the corner tip of this child: ", child.red_face[3][0].color)
+        # print(f"This is what's in the corner tip of this child: ", child.red_face[3][0].color)
         child.rotate_diagonal_layer(diagonal_num, False, row_num)
-        print(f"This is what's in the corner tip of this child after: ", child.red_face[3][0].color)
+        # print(f"This is what's in the corner tip of this child after: ", child.red_face[3][0].color)
 
-        return child
+        return pyraminx_state(child, self.g_cost + 1, self)
     
     def generate_child_states(self):
         """
@@ -591,3 +592,6 @@ class pyraminx_state:
         """
         Checks the instance of this state to see if it's the solved state
         """
+    
+    def __lt__(self, other):
+        return self.f_cost < other.f_cost
