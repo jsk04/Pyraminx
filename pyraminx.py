@@ -480,24 +480,38 @@ class Pyraminx:
                 green_indices = [(0, 0)]   # Green top-left (left tip)
                 face1 = self.red_face
                 face2 = self.yellow_face
+                face1_tiles = self.red_tiles
+                face2_tiles = self.yellow_tiles
+                green_tiles = self.green_tiles
             elif layer == 2:
                 face1_indices  = [(2, 0), (3, 1), (3, 2)]     # Second row of red
                 face2_indices  = [(2, 4), (3, 4), (3, 5)]  # Second row of yellow
                 green_indices = [(1, 0), (1, 1), (1, 2)]   # Second row of green
                 face1 = self.red_face
                 face2 = self.yellow_face
+                face1_tiles = self.red_tiles
+                face2_tiles = self.yellow_tiles
+                green_tiles = self.green_tiles
             elif layer == 3:
                 face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]     # Third row of red
                 face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]  # Third row of yellow
                 green_indices = [(2, 0), (2, 1), (2, 2), (2,3), (2, 4)]   # Third row of green
                 face1 = self.red_face
                 face2 = self.yellow_face
+                face1_tiles = self.red_tiles
+                face2_tiles = self.yellow_tiles
+                green_tiles = self.green_tiles
+
             elif layer == 4:
                 face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of red
                 face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of yellow
                 green_indices = [(3, 0), (3, 1), (3, 2), (3,3), (3, 4), (3, 5), (3, 6)]   # Fourth row of green
                 face1 = self.red_face
                 face2 = self.yellow_face
+                face1_tiles = self.red_tiles
+                face2_tiles = self.yellow_tiles
+                green_tiles = self.green_tiles
+
 
         elif diagonal == 2:
             # Diagonal from top-right to bottom-left, using the right tip of the green face as reference
@@ -507,24 +521,37 @@ class Pyraminx:
                 green_indices = [(3, 6)]   # Green top-right (right tip)
                 face1 = self.blue_face
                 face2 = self.red_face
+                face1_tiles = self.blue_tiles
+                face2_tiles = self.red_tiles
+                green_tiles = self.green_tiles
+
             elif layer == 2:
                 face1_indices = [(2, 0), (3, 1), (3, 2)]    # Second row of blue
                 face2_indices = [(2, 4), (3, 4), (3, 5)]     # Second row of red
                 green_indices = [(2, 4), (3, 4),(3, 5)]   # Second row of green (correcting indices)
                 face1 = self.blue_face
                 face2 = self.red_face
+                face1_tiles = self.blue_tiles
+                face2_tiles = self.red_tiles
+                green_tiles = self.green_tiles
             elif layer == 3:
                 face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]    # Third row of blue
                 face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]     # Third row of red
                 green_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]   # Third row of green (corrected)
                 face1 = self.blue_face
                 face2 = self.red_face
+                face1_tiles = self.blue_tiles
+                face2_tiles = self.red_tiles
+                green_tiles = self.green_tiles
             elif layer == 4:
                 face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of blue
                 face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of red
                 green_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]  # Fourth row of green
                 face1 = self.blue_face
                 face2 = self.red_face
+                face1_tiles = self.blue_tiles
+                face2_tiles = self.red_tiles
+                green_tiles = self.green_tiles
 
         elif diagonal == 3:
             # Diagonal from bottom-left to top-right, using the bottom-left tip of the green face as reference
@@ -534,27 +561,49 @@ class Pyraminx:
                 green_indices = [(3, 0)]   # Green bottom-left (bottom tip)
                 face1 = self.yellow_face
                 face2 = self.blue_face
+                face1_tiles = self.yellow_tiles
+                face2_tiles = self.blue_tiles
+                green_tiles = self.green_tiles
+
             elif layer == 2:
                 face1_indices = [(2, 0), (3, 1), (3, 2)]  # Second row of yellow
                 face2_indices = [(2, 4), (3, 4), (3, 5)]    # Second row of blue
                 green_indices = [(2, 0), (3, 1), (3, 2)]   # Second row of green
                 face1 = self.yellow_face
                 face2 = self.blue_face
+                face1_tiles = self.yellow_tiles
+                face2_tiles = self.blue_tiles
+                green_tiles = self.green_tiles
+
             elif layer == 3:
                 face1_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]  # Third row of yellow
                 face2_indices = [(1, 2), (2, 2), (2, 3), (3, 2), (3, 3)]    # Third row of blue
                 green_indices = [(1, 0), (2, 1), (2, 2), (3, 3), (3, 4)]   # Third row of green
                 face1 = self.yellow_face
                 face2 = self.blue_face
+                face1_tiles = self.yellow_tiles
+                face2_tiles = self.blue_tiles
+                green_tiles = self.green_tiles
+
             elif layer == 4:
                 face1_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]  # Fourth row of yellow
                 face2_indices = [(0, 0), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)]    # Fourth row of blue
                 green_indices = [(0, 0), (1, 1), (1, 2), (2, 3), (2, 4), (3, 5), (3, 6)]   # Fourth row of green
                 face1 = self.yellow_face
                 face2 = self.blue_face
+                face1_tiles = self.yellow_tiles
+                face2_tiles = self.blue_tiles
+                green_tiles = self.green_tiles
+
         
         # Apply the rotation for the selected layer
         self._rotate_face_elements(face1, face2, self.green_face, face1_indices, face2_indices, green_indices, is_clockwise)
+
+        # Update the tile stacks using tally_row_tiles
+        for row in range(1, layer + 1):
+            self.tally_row_tiles(face1, face1_tiles, row)
+            self.tally_row_tiles(face2, face2_tiles, row)
+            self.tally_row_tiles(self.green_face, green_tiles, row)
 
     def _rotate_face_elements(self, face1, face2, green_face, face1_indices: list[tuple], face2_indices: list[tuple], green_indices: list[tuple], is_clockwise: bool) -> None:
         """
@@ -568,13 +617,6 @@ class Pyraminx:
             # Perform clockwise shift
             for i in range(len(face1_indices)): #i is the picition of layers in the indice being passed
                 #Push movement onto stack
-                new_position1 = face2[face2_indices[i][0]][face2_indices[i][1]].position
-                new_position2 = green_face[green_indices[i][0]][green_indices[i][1]].position
-
-                face1[face1_indices[i][0]][face1_indices[i][1]].move(new_position1)
-                face2[face2_indices[i][0]][face2_indices[i][1]].move(new_position2)
-                green_face[green_indices[i][0]][green_indices[i][1]].move(temp[i].position)
-
                 face1[face1_indices[i][0]][face1_indices[i][1]] = face2[face2_indices[i][0]][face2_indices[i][1]]
                 face2[face2_indices[i][0]][face2_indices[i][1]] = green_face[green_indices[i][0]][green_indices[i][1]]
                 green_face[green_indices[i][0]][green_indices[i][1]] = temp[i]
