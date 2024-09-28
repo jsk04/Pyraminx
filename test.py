@@ -1,7 +1,7 @@
-from pyraminx import Pyraminx
-from pyraminx import pyraminx_state
+from Pyraminx.pyraminx import Pyraminx
+from Pyraminx.pyraminx import pyraminx_state
 from randomizer import randomizer
-from pyraminx import tile
+from Pyraminx.pyraminx import tile
 
 pyraminx = Pyraminx()
 

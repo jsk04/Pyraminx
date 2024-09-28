@@ -1,4 +1,4 @@
-from pyraminx import Pyraminx
+from Pyraminx.pyraminx import Pyraminx
 from randomizer import randomizer
 
 def main():
