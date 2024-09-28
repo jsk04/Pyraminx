@@ -542,20 +542,28 @@ class pyraminx_state:
         self.f_cost = self.g_cost + self.h_cost
         self.parent = parent
 
+    def heuristic_helper(self, face: list[list], color: str) -> int:
+        face_colors = []
+        for row in face:
+            for sticker in row:
+                if sticker.color != color:
+                    if sticker.color not in face_colors:
+                        face_colors.append(sticker.color)
+        
+        return len(face_colors)
+
     def heuristic(self) -> int:
         """
         Calculates the heurtistic for the instance of this state
         """
-        max_stack_size = 0
-        for face in self.state.tiles:
-            for row in face:
-                for tile in row:
-                    if len(tile.move_stack) > max_stack_size:
-                        max_stack_size = len(tile.move_stack)
+        red_heuristic = self.heuristic_helper(self.state.red_face, "red")
+        blue_heuristic = self.heuristic_helper(self.state.blue_face, "blue")
+        yellow_heuristic = self.heuristic_helper(self.state.yellow_face, "yellow")
+        green_heuristic = self.heuristic_helper(self.state.green_face, "green")
         
-        return max_stack_size
-
-    def apply_horizontal_moves(self, row_num):
+        return max(red_heuristic, blue_heuristic, yellow_heuristic, green_heuristic)
+            
+    def apply_horizontal_moves(self, row_num: int):
         child = Pyraminx(self.state)
         # print(f"This is what's in the red tip of this child: ", child.red_face[0][0].color)
         child.rotate_front_rows(False, row_num)
@@ -564,7 +572,7 @@ class pyraminx_state:
         # Child's g_cost will be one plus the parent's g_cost
         return pyraminx_state(child, self.g_cost + 1, self)
     
-    def apply_diagonal_moves(self, diagonal_num, row_num):
+    def apply_diagonal_moves(self, diagonal_num: int, row_num: int):
         child = Pyraminx(self.state)
         # print(f"This is what's in the corner tip of this child: ", child.red_face[3][0].color)
         child.rotate_diagonal_layer(diagonal_num, False, row_num)
@@ -572,7 +580,7 @@ class pyraminx_state:
 
         return pyraminx_state(child, self.g_cost + 1, self)
     
-    def generate_child_states(self):
+    def generate_child_states(self) -> list:
         """
         Generate all possible moves and return new pyraminx states
         """
@@ -588,10 +596,17 @@ class pyraminx_state:
 
         return(child_states)
     
-    def is_solved(self):
+    def is_solved(self) -> bool:
         """
         Checks the instance of this state to see if it's the solved state
         """
+        if self.h_cost == 0:
+            return True
+        else:
+            return False
     
     def __lt__(self, other):
+        """
+        Less than function for heap comparison
+        """
         return self.f_cost < other.f_cost

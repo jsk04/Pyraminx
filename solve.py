@@ -5,8 +5,9 @@ from pyraminx import tile
 import heapq
 
 pyraminx = Pyraminx()
-randomizer(2, pyraminx)
+randomizer(1, pyraminx)
 state = pyraminx_state(pyraminx, 0)
+print(state.h_cost)
 
 def a_star_solve(initial_state: pyraminx_state):
     open_list = []
@@ -17,7 +18,7 @@ def a_star_solve(initial_state: pyraminx_state):
     while open_list:
         current_state = heapq.heappop(open_list)
 
-        if current_state.is_goal():
+        if current_state.is_solved():
             print("Current state is goal")
             return reconstruct_path(current_state)
         

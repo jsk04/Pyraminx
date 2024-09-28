@@ -6,10 +6,16 @@ from pyraminx import tile
 pyraminx = Pyraminx()
 
 pyraminx.rotate_front_rows(True, 1)
-
-state = pyraminx_state(pyraminx, 0)
-print(state.h_cost)
-child_states = state.generate_child_states()
+pyraminx.rotate_front_rows(False, 2)
+pyraminx.rotate_diagonal_layer(1, True, 1)
+pyraminx.rotate_diagonal_layer(1, False, 1)
+pyraminx.rotate_front_rows(True, 2)
+pyraminx.rotate_front_rows(False, 1)
+current_state = pyraminx_state(pyraminx, 0)
+print(current_state.h_cost)
+# current_state.state.rotate_diagonal_layer(1, False, 1)
+# print(current_state.h_cost)
+# child_states = state.generate_child_states()
 # for tile in pyraminx.blue_tiles[1]:
 #     print(tile.fixed_place)
 
