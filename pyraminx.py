@@ -418,12 +418,15 @@ class Pyraminx:
         is the original one. If not, add a tally to the stack of the tile.
         """
         for sticker, tile in zip(face[row_num-1], tiles[row_num-1]):
-            # print(sticker.position)
+            #print(f'Sticker position: ', sticker.position)
             if tile.fixed_place == sticker.position:
                 tile.move_stack.clear()
             else:
-                # print(tile.fixed_place)
-                tile.move_stack.append("X")
+                if len(tile.move_stack) > 0 and sticker.position == tile.move_stack[-1]:
+                    pass
+                else:
+                    #print(f'Tile position: ', tile.fixed_place)
+                    tile.move_stack.append(sticker.position)
 
     def rotate_front_rows(self, is_clockwise: bool, row_num: int) -> None:
         """
@@ -600,7 +603,7 @@ class Pyraminx:
         self._rotate_face_elements(face1, face2, self.green_face, face1_indices, face2_indices, green_indices, is_clockwise)
 
         # Update the tile stacks using tally_row_tiles
-        for row in range(1, 4):
+        for row in range(0, 4):
             self.tally_row_tiles(face1, face1_tiles, row)
             self.tally_row_tiles(face2, face2_tiles, row)
             self.tally_row_tiles(self.green_face, green_tiles, row)
@@ -643,4 +646,4 @@ class pyraminx_state:
     def heuristic(self):
         for face in self.state:
             for row in face:
-                
+                None
