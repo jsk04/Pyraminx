@@ -10,17 +10,28 @@ class tile:
 
 class Pyraminx:
     def __init__(self, instance=None) -> None:
-        self.red_face = []
-        self.blue_face = []
-        self.green_face = []
-        self.yellow_face = []
+        if instance is not None and isinstance(instance, Pyraminx):
+            self.red_face = instance.red_face
+            self.blue_face = instance.blue_face
+            self.green_face = instance.green_face
+            self.yellow_face = instance.yellow_face
 
-        self.red_tiles = []
-        self.blue_tiles = []
-        self.yellow_tiles = []
-        self.green_tiles = []
+            self.red_tiles = instance.red_tiles
+            self.blue_tiles = instance.blue_tiles
+            self.yellow_tiles = instance.yellow_tiles
+            self.green_tiles = instance.green_tiles
+        else:
+            self.red_face = []
+            self.blue_face = []
+            self.green_face = []
+            self.yellow_face = []
 
-        self.initialize()
+            self.red_tiles = []
+            self.blue_tiles = []
+            self.yellow_tiles = []
+            self.green_tiles = []
+
+            self.initialize()
 
         self.faces = [self.red_face,
                       self.blue_face,
@@ -524,12 +535,12 @@ class Pyraminx:
                 face1[face1_indices[i][0]][face1_indices[i][1]] = temp[i]
 
 class pyraminx_state:
-    def __init__(self, state: Pyraminx, g_cost, parent) -> None:
+    def __init__(self, state: Pyraminx, g_cost: int) -> None:
         self.state = state
         self.g_cost = g_cost
-        self.h_cost = self.heuristic
+        self.h_cost = self.heuristic()
         self.f_cost = self.g_cost + self.h_cost
-        self.parent = parent
+        # self.parent = parent
 
     def heuristic(self) -> int:
         """
@@ -546,13 +557,20 @@ class pyraminx_state:
 
     def apply_horizontal_moves(self, row_num):
         child = Pyraminx(self.state)
+        print(f"This is what's in the red tip of this child: ", child.red_face[0][0].color)
         child.rotate_front_rows(False, row_num)
+        print(f"This is what's in the red tip of this child after: ", child.red_face[0][0].color)
 
         return child
     
     def apply_diagonal_moves(self, diagonal_num, row_num):
         child = Pyraminx(self.state)
+        print(f"This is what's in the corner tip of this child: ", child.red_face[3][0].color)
+        child.rotate_diagonal_layer(diagonal_num, False, row_num)
+        print(f"This is what's in the corner tip of this child after: ", child.red_face[3][0].color)
 
+        return child
+    
     def generate_child_states(self):
         """
         Generate all possible moves and return new pyraminx states
@@ -563,7 +581,12 @@ class pyraminx_state:
             child_states.append(self.apply_horizontal_moves(row_num))
 
         #Diagonal moves
+        for diagonal_num in range(1, 4):
+            for row_num in range(1, 5):
+                child_states.append(self.apply_diagonal_moves(diagonal_num, row_num))
 
+        return(child_states)
+    
     def is_solved(self):
         """
         Checks the instance of this state to see if it's the solved state
