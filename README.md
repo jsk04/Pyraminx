@@ -30,8 +30,6 @@ Ensure the following Python files are present in the same directory:
 
 Install the necessary dependencies using:
 
-    bash
-    Copy code
     pip install matplotlib
 
 ***Instructions***
