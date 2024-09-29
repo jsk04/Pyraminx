@@ -481,23 +481,3 @@ class pyraminx_state:
         Less than function for heap comparison
         """
         return self.f_cost < other.f_cost
-    
-    # def __eq__(self, other):
-    #     """
-    #     """
-    #     if isinstance(other, pyraminx_state):
-    #         return self.get_state_representation() == other.get_state_representation()
-    #     return False
-
-    # def __hash__(self):
-    #     """
-    #     """
-    #     return hash(self.get_state_representation())
-
-    # def get_state_representation(self):
-    #     """
-    #     Flatten all the face stickers into a tuple of colors for easy comparison and hashing
-    #     """
-    #     return tuple(
-    #         sticker.color for face in self.state.faces for row in face for sticker in row
-    #     )
