@@ -11,11 +11,10 @@ def randomizer(num_moves: int, pyraminx):
     Returns:
         The scrambled Pyraminx puzzle.
     """
-    for x in range(num_moves):
+    for _ in range(num_moves):
         movePicker(pyraminx)
 
     return pyraminx
-
 
 def movePicker(pyraminx):
     """
