@@ -13,7 +13,7 @@ def a_star_solve(initial_state):
 
     heapq.heappush(open_list, initial_state)
 
-    max_iterations = 8000  # Prevent infinite loops or excessive runtime
+    max_iterations = 15000  # Prevent infinite loops or excessive runtime
     iteration = 0
     nodes_expanded = 0  # Counter for the number of nodes expanded
 
