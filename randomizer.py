@@ -13,6 +13,7 @@ def randomizer(num_moves: int, pyraminx):
     """
     for _ in range(num_moves):
         movePicker(pyraminx)
+
     return pyraminx
 
 def movePicker(pyraminx):
